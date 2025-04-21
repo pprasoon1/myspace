@@ -1,50 +1,62 @@
-// app/api/blogs/[id]/route.ts
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import { Blog } from "@/models/Blog";
 import { getCurrentUser } from "@/lib/auth";
 
+// Define a more specific type for your handler context
+type BlogRouteContext = {
+  params: {
+    id: string;
+  };
+};
+
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: BlogRouteContext
 ) {
   await dbConnect();
-  const blog = await Blog.findById(params.id);
+  const id = context.params.id;
+  const blog = await Blog.findById(id);
+  
   if (!blog) {
     return NextResponse.json({ message: "Not Found" }, { status: 404 });
   }
+  
   return NextResponse.json({ blog });
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: BlogRouteContext
 ) {
   await dbConnect();
   const user = await getCurrentUser();
+  
   if (!user || user.role !== "admin") {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const { title, content } = await request.json();
+  const { title, content } = await req.json();
   const updatedBlog = await Blog.findByIdAndUpdate(
-    params.id,
+    context.params.id,
     { title, content, updatedAt: new Date() },
     { new: true }
   );
+  
   return NextResponse.json({ blog: updatedBlog });
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: BlogRouteContext
 ) {
   await dbConnect();
   const user = await getCurrentUser();
+  
   if (!user || user.role !== "admin") {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  await Blog.findByIdAndDelete(params.id);
+  await Blog.findByIdAndDelete(context.params.id);
   return NextResponse.json({ message: "Blog deleted" });
 }

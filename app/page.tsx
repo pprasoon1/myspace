@@ -5,11 +5,12 @@ import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import ChatButton from "@/components/ChatButton";
-
+// import {PulseButton} from "devjunkie";
 export default function Home() {
   return (
     <main>
       <Hero />
+      {/* <PulseButton>Prassoon</PulseButton> */}
       <About />
       <Projects />
       <Skills />
