@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "@/app/context/AuthContext";
+import { FaPaperPlane, FaTimes } from "react-icons/fa";
 
 interface Message {
   _id: string;
@@ -16,7 +17,7 @@ interface UserOption {
   _id: string;
   name: string;
   email: string;
-  avatarUrl?: string; // Optionally support avatars
+  avatarUrl?: string;
   online?: boolean;
 }
 
@@ -77,16 +78,15 @@ export default function ChatModal({ onClose }: ChatModalProps) {
       fetch("/api/socket")
         .then(() => {
           const sock = io({
-             path: "/api/socket",
+            path: "/api/socket",
             withCredentials: true,
-           });
+          });
           setSocket(sock);
 
           sock.on("receive_message", (msg: Message) => {
             setMessages((prev) => [...prev, msg]);
           });
 
-          // Optionally: handle online status
           sock.on("users_online", (onlineIds: string[]) => {
             setUsers((prev) =>
               prev.map((u) => ({ ...u, online: onlineIds.includes(u._id) }))
@@ -99,19 +99,15 @@ export default function ChatModal({ onClose }: ChatModalProps) {
         })
         .catch(() => setError("Socket connection failed."));
     }
-    // Cleanup on unmount
     return () => {
       socket?.disconnect();
     };
-    // eslint-disable-next-line
   }, [user, peerId]);
 
-  // Auto-scroll
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Send message handler
   const sendMessage = useCallback(async () => {
     if (!socket || !input.trim() || !peerId) return;
     setSending(true);
@@ -120,7 +116,6 @@ export default function ChatModal({ onClose }: ChatModalProps) {
     setSending(false);
   }, [socket, input, peerId]);
 
-  // Send on Enter
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !sending && input.trim()) {
       sendMessage();
@@ -129,37 +124,48 @@ export default function ChatModal({ onClose }: ChatModalProps) {
 
   if (!user) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-all animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[90vh] flex flex-col p-4 relative">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
-          aria-label="Close chat"
-        >
-          <span aria-hidden>✕</span>
-        </button>
+  // Helper: get admin avatar
+  const adminAvatar = (
+    <img
+      src="/stone.png" // Replace with your hero image path
+      alt="Admin"
+      className="w-8 h-8 rounded-full border-2 border-green-400 object-cover"
+    />
+  );
 
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#1a232a] via-[#222e23] to-[#183a2c] bg-opacity-95">
+      {/* Green blurred glow background */}
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500 rounded-full filter blur-3xl opacity-20 pointer-events-none" />
+      <div className="relative z-10 w-full h-full max-w-4xl max-h-[95vh] flex flex-col rounded-3xl shadow-2xl border border-green-800/30 bg-[#181e1a]/90 backdrop-blur-xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="rounded-full bg-indigo-100 w-10 h-10 flex items-center justify-center text-xl font-bold">
-            {user.name?.[0] ?? "?"}
+        <div className="flex items-center justify-between p-6 border-b border-green-900/40 bg-[#181e1a]/80">
+          <div className="flex items-center gap-3">
+            <div className="rounded-full bg-green-600/30 w-12 h-12 flex items-center justify-center text-2xl font-bold text-green-200">
+              {user.name?.[0] ?? "?"}
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-green-200">{user.name}</h2>
+              <p className="text-xs text-green-400">{user.email}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-semibold">{user.name}</h2>
-            <p className="text-xs text-gray-500">{user.email}</p>
-          </div>
+          <button
+            onClick={onClose}
+            className="text-green-400 hover:text-white text-3xl transition"
+            aria-label="Close chat"
+          >
+            <FaTimes />
+          </button>
         </div>
 
         {/* Admin: choose user */}
         {user.role === "admin" && (
-          <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">Chat with:</label>
+          <div className="p-4 bg-[#181e1a]/80 border-b border-green-900/40">
+            <label className="block text-sm font-medium mb-1 text-green-300">Chat with:</label>
             <select
               value={peerId}
               onChange={(e) => setPeerId(e.target.value)}
-              className="border p-2 rounded w-full"
+              className="border p-2 rounded w-full bg-[#161e1a] text-green-200 border-green-700"
               disabled={loadingUsers}
             >
               <option value="">Select a user…</option>
@@ -183,43 +189,46 @@ export default function ChatModal({ onClose }: ChatModalProps) {
 
         {/* Messages */}
         <div
-          className="flex-1 overflow-y-auto p-2 mb-2 space-y-2 bg-gray-50 rounded"
+          className="flex-1 overflow-y-auto p-6 space-y-4 bg-transparent"
           style={{ scrollbarWidth: "thin" }}
         >
           {loadingMessages ? (
-            <div className="text-center text-gray-400 mt-10">Loading messages…</div>
+            <div className="text-center text-green-300 mt-10">Loading messages…</div>
           ) : messages.length === 0 ? (
-            <div className="text-center text-gray-400 mt-10">No messages yet.</div>
+            <div className="text-center text-green-300 mt-10">No messages yet.</div>
           ) : (
             messages.map((m, idx) => {
               const mine = m.from === user.id;
-              // Group messages by sender
-              const prev = messages[idx - 1];
-              const isFirstOfGroup = !prev || prev.from !== m.from;
+              const isAdmin = m.from === process.env.NEXT_PUBLIC_ADMIN_ID;
               return (
-                <div key={m._id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className="flex items-end gap-2">
-                    {!mine && isFirstOfGroup && (
-                      <div className="w-7 h-7 rounded-full bg-indigo-200 flex items-center justify-center text-sm font-bold">
-                        {users.find(u => u._id === m.from)?.name?.[0] || "?"}
-                      </div>
-                    )}
-                    <div
-                      className={`relative inline-block max-w-[70%] px-4 py-2 rounded-2xl shadow ${
-                        mine
-                          ? "bg-indigo-500 text-white rounded-br-none"
-                          : "bg-white text-gray-900 rounded-bl-none"
-                      }`}
-                    >
-                      <p>{m.content}</p>
-                      <span className="block text-[10px] text-gray-400 mt-1 text-right">
-                        {new Date(m.createdAt).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </div>
+                <div
+                  key={m._id}
+                  className={`flex w-full ${mine ? "justify-end" : "justify-start"}`}
+                >
+                  {/* Admin avatar only for admin messages (left side) */}
+                  {!mine && isAdmin && (
+                    <div className="flex-shrink-0 mr-2">{adminAvatar}</div>
+                  )}
+                  <div
+                    className={`relative max-w-[70vw] md:max-w-[40vw] px-5 py-3 rounded-2xl shadow-lg
+                      ${mine
+                        ? "bg-gradient-to-br from-green-500 to-green-700 text-white rounded-br-none"
+                        : isAdmin
+                          ? "bg-white/90 text-green-900 rounded-bl-none"
+                          : "bg-gray-100/80 text-green-900 rounded-bl-none"
+                      }
+                    `}
+                  >
+                    <p className="break-words">{m.content}</p>
+                    <span className="block text-[11px] text-green-300 mt-2 text-right">
+                      {new Date(m.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
                   </div>
+                  {/* Space for alignment if needed */}
+                  {mine && <div className="w-10" />}
                 </div>
               );
             })
@@ -228,46 +237,27 @@ export default function ChatModal({ onClose }: ChatModalProps) {
         </div>
 
         {/* Input */}
-        <div className="flex gap-2">
+        <div className="flex items-center gap-3 p-6 border-t border-green-900/40 bg-[#181e1a]/80">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleInputKeyDown}
             placeholder="Type a message…"
-            className="flex-1 border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            className="flex-1 border border-green-700 bg-[#232b22]/60 p-3 rounded-lg text-green-100 focus:outline-none focus:ring-2 focus:ring-green-400"
             disabled={sending}
             autoFocus
           />
           <button
             onClick={sendMessage}
-            className={`bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold transition ${
-              input.trim() && !sending
-                ? "hover:bg-indigo-700"
+            className={`bg-gradient-to-r from-green-500 to-green-700 text-white px-5 py-3 rounded-xl font-semibold transition flex items-center gap-2 shadow
+              ${input.trim() && !sending
+                ? "hover:scale-105"
                 : "opacity-50 cursor-not-allowed"
-            }`}
+              }`}
             disabled={!input.trim() || sending}
             aria-label="Send message"
           >
-            {sending ? (
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                />
-              </svg>
-            ) : (
-              "Send"
-            )}
+            <FaPaperPlane />
           </button>
         </div>
       </div>

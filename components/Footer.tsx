@@ -1,10 +1,9 @@
 export default function Footer() {
-    return (
-      <footer className="bg-gray-900 text-white py-6 text-center">
-        <p className="text-sm">
-          © {new Date().getFullYear()} Your Name. All rights reserved.
-        </p>
-      </footer>
-    );
-  }
-  
+  return (
+    <footer className="bg-gradient-to-r from-[#171d1a] to-[#232b22] text-green-300 py-8 text-center border-t border-white/10">
+      <p className="text-sm tracking-wider">
+        © {new Date().getFullYear()} Pranay Prasoon. All rights reserved.
+      </p>
+    </footer>
+  );
+}

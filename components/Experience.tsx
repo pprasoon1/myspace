@@ -1,28 +1,55 @@
+'use client';
+import { motion } from 'framer-motion';
+
 export default function Experience() {
-    return (
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-10">Experience</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold">Software Engineer @ XYZ Corp</h3>
-              <p className="text-gray-600">Jan 2022 - Present</p>
-              <p className="text-gray-700 mt-2">
-                Worked on building scalable web applications using React and Node.js.
-                Led a team of developers and implemented several key features.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold">Frontend Developer @ ABC Ltd</h3>
-              <p className="text-gray-600">Jul 2020 - Dec 2021</p>
-              <p className="text-gray-700 mt-2">
-                Built responsive interfaces using React and Tailwind. Collaborated
-                with designers and backend developers.
-              </p>
-            </div>
-          </div>
+  const jobs = [
+    {
+      title: "Software Engineer",
+      company: "XYZ Corp",
+      period: "Jan 2022 - Present",
+      description:
+        "Built scalable web apps with React & Node.js. Led a dev team and implemented key features.",
+    },
+    {
+      title: "Frontend Developer",
+      company: "ABC Ltd",
+      period: "Jul 2020 - Dec 2021",
+      description:
+        "Built responsive interfaces with React & Tailwind. Collaborated with designers and backend devs.",
+    },
+  ];
+
+  return (
+    <section id="experience" className="py-32 px-6 bg-gradient-to-b from-[#232b22] to-[#171d1a]">
+      <div className="max-w-4xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-green-400 to-green-700 bg-clip-text text-transparent"
+        >
+          Experience
+        </motion.h2>
+        <div className="space-y-8">
+          {jobs.map((job, idx) => (
+            <motion.div
+              key={job.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: idx * 0.15 }}
+              viewport={{ once: true }}
+              className="bg-white/10 backdrop-blur-lg border border-white/10 p-8 rounded-2xl shadow-lg"
+            >
+              <h3 className="text-2xl font-semibold text-green-400">
+                {job.title} <span className="text-white/80 font-normal">@ {job.company}</span>
+              </h3>
+              <p className="text-green-200 text-sm mb-3">{job.period}</p>
+              <p className="text-gray-200">{job.description}</p>
+            </motion.div>
+          ))}
         </div>
-      </section>
-    );
-  }
-  
+      </div>
+    </section>
+  );
+}
