@@ -41,7 +41,7 @@ export default function ChatModal({ onClose }: ChatModalProps) {
   useEffect(() => {
     if (user?.role === "admin") {
       setLoadingUsers(true);
-      fetch("/api/users")
+      fetch("/api/users", { credentials: "include" })
         .then((res) => res.json())
         .then((data) => {
           setUsers(data.users || []);
@@ -76,7 +76,10 @@ export default function ChatModal({ onClose }: ChatModalProps) {
     if (user && peerId) {
       fetch("/api/socket")
         .then(() => {
-          const sock = io({ path: "/api/socket" });
+          const sock = io({
+             path: "/api/socket",
+            withCredentials: true,
+           });
           setSocket(sock);
 
           sock.on("receive_message", (msg: Message) => {
