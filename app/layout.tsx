@@ -7,17 +7,17 @@ export const metadata = {
 };
 
 import { ReactNode } from "react";
-import Navbar from "@/components/Navbar";
+
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
         <AuthProvider>
-          <Navbar />
-          <div className="pt-14">        
+          
+                
           {children}
-          </div>
+         
         </AuthProvider>
       </body>
     </html>

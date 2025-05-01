@@ -4,18 +4,18 @@ import { motion } from 'framer-motion';
 export default function Experience() {
   const jobs = [
     {
-      title: "Software Engineer",
-      company: "XYZ Corp",
-      period: "Jan 2022 - Present",
+      title: "Software Developer Intern",
+      company: "Tripfox Travellers",
+      period: "November 2023 - February 2024",
       description:
-        "Built scalable web apps with React & Node.js. Led a dev team and implemented key features.",
+        "Built scalable backend APIs with Node.js & Express. Worked on a team of 4 to build a flight booking platform.",
     },
     {
-      title: "Frontend Developer",
-      company: "ABC Ltd",
-      period: "Jul 2020 - Dec 2021",
+      title: "Co-Head of Tech",
+      company: "Alan Turing Club BU",
+      period: "Jul 2024 - Present",
       description:
-        "Built responsive interfaces with React & Tailwind. Collaborated with designers and backend devs.",
+        "Organized various tech events, including hackathons, workshops, and guest lectures. Contributed in the development of Alan Turing Club BU's website.",
     },
   ];
 

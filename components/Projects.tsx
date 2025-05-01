@@ -5,24 +5,26 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 export default function Projects() {
   const projects = [
     {
-      title: "Modern Portfolio",
-      description: "A sleek, animated portfolio website built with Next.js and Tailwind CSS.",
-      tech: "Next.js, Tailwind CSS, Framer Motion",
-      link: "#"
+      title: "BU RoomSearch",
+      description: "A website that helps students find and change their roommates, hostel rooms. Helped more than 1500 users.",
+      tech: "React.js, Express.js, MongoDB",
+      link: "https://uiroomsearch.vercel.app"
     },
     {
-      title: "Real-Time Chat App",
-      description: "A scalable chat platform with live messaging and notifications.",
-      tech: "React, Node.js, Socket.io",
-      link: "#"
+      title: "DevPilot-Pro",
+      description: "An AI powered application that learners with project based learning by providing realtime AI support and step by step approach while building projects",
+      tech: "Gemini-pro, React.js, Express.js, MongoDB",
+      link: "devpilot-pro.vercel.app"
     },
     {
-      title: "E-Commerce Platform",
-      description: "Complete e-commerce solution with payment and admin dashboard.",
-      tech: "React, Stripe, Express.js",
-      link: "#"
-    }
+      title: "Cropwise",
+      description: "An ML-driven agriculture recommendation system for selecting crops and fertilizers.",
+      tech: "Python, SkLearn, React, Express",
+      link: "cropwise-dti.vercel.app"
+    },
+    
   ];
+  
 
   return (
     <section id="projects" className="py-32 px-6 bg-gradient-to-b from-[#1a232a] to-[#101a14]">
