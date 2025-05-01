@@ -1,20 +1,52 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI as string || "mongodb+srv://prasu202324:prasu202324@cluster0.3un6vxy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) throw new Error("Please define the MONGODB_URI environment variable");
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable');
+}
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+// Clear type definition for cached connection
+interface CachedConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+let cached: CachedConnection = (global as any).mongoose || { conn: null, promise: null };
 
 export async function dbConnect() {
-  if (cached.conn) return cached.conn;
+  if (cached.conn) {
+    console.log('Using cached connection');
+    return cached.conn;
+  }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "portfolio_blog",
-      bufferCommands: false,
-    }).then((mongoose) => mongoose);
+    const opts = {
+      bufferCommands: true,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI!, opts)
+      .then((mongoose) => {
+        console.log('New database connection established');
+        return mongoose;
+      })
+      .catch((error) => {
+        console.error('MongoDB connection error:', error);
+        cached.promise = null;
+        throw error;
+      });
   }
-  cached.conn = await cached.promise;
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    throw error;
+  }
+
+  (global as any).mongoose = cached;
   return cached.conn;
 }
