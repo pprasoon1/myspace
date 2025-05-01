@@ -14,13 +14,13 @@ export default function Projects() {
       title: "DevPilot-Pro",
       description: "An AI powered application that learners with project based learning by providing realtime AI support and step by step approach while building projects",
       tech: "Gemini-pro, React.js, Express.js, MongoDB",
-      link: "devpilot-pro.vercel.app"
+      link: "https://devpilot-pro.vercel.app"
     },
     {
       title: "Cropwise",
       description: "An ML-driven agriculture recommendation system for selecting crops and fertilizers.",
       tech: "Python, SkLearn, React, Express",
-      link: "cropwise-dti.vercel.app"
+      link: "https://cropwise-dti.vercel.app"
     },
     
   ];
