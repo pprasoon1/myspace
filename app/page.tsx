@@ -6,7 +6,9 @@ import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import ChatButton from "@/components/ChatButton";
 import BlogButton from "@/components/BlogButton";
-// import {PulseButton} from "devjunkie";
+
+export const dynamic = 'force-dynamic';  // disables static generation
+export const revalidate = 0;   
 export default function Home() {
   return (
     <main>
