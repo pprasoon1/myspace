@@ -11,7 +11,7 @@ interface Params {
 }
 
 export default async function BlogDetailPage({ params }: Params) {
-  const { id } = params;
+  const { id } = await params;
 
   await dbConnect();
   const blog = await Blog.findById(id).lean() as { published?: boolean; title: string; createdAt: string; content: string } | null;
