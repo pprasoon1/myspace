@@ -1,45 +1,42 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
-import { motion } from 'framer-motion';
-import { FaPen } from 'react-icons/fa';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
+import { motion } from "framer-motion";
+import { FaPen } from "react-icons/fa";
 
 export default function CreateBlogPage() {
-  const authContext = useAuth();
-  const user = authContext?.user;
+  const { user } = useAuth();
   const router = useRouter();
-
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [error, setError] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    const res = await fetch('/api/blogs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const res = await fetch("/api/blogs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",             // ← ensure the HTTP-only cookie is sent
       body: JSON.stringify({ title, content }),
     });
 
     if (res.ok) {
-      router.push('/admin');
+      router.push("/admin");
     } else {
-      const data = await res.json();
-      setError(data.message || 'Something went wrong.');
+      const data = await res.json().catch(() => ({}));
+      setError(data.message || "Something went wrong.");
     }
   };
 
   if (!user) return <p>Loading...</p>;
-  if (user.role !== 'admin') return <p className="text-red-500">Access denied.</p>;
+  if (user.role !== "admin") return <p className="text-red-500">Access denied.</p>;
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a232a] via-[#222e23] to-[#183a2c] relative overflow-hidden">
-      {/* Green blurred glow background */}
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-green-500 rounded-full filter blur-3xl opacity-20 pointer-events-none" />
       <motion.div
         initial={{ opacity: 0, y: 40 }}

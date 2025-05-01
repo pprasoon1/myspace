@@ -6,14 +6,14 @@ import { getCurrentUser } from "@/lib/auth";
 
 export async function GET() {
   await dbConnect();
-  const blogs = await Blog.find().sort({ createdAt: -1 });
+  const blogs = await Blog.find().sort({ createdAt: -1 }).lean();
   return NextResponse.json({ blogs });
 }
 
 export async function POST(request: Request) {
   await dbConnect();
 
-  // only admin can create
+  // 🔐 Only admin can create
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -23,7 +23,6 @@ export async function POST(request: Request) {
     title?: string;
     content?: string;
   };
-
   if (!title || !content) {
     return NextResponse.json(
       { message: "Title and content are required" },
@@ -32,5 +31,5 @@ export async function POST(request: Request) {
   }
 
   const blog = await Blog.create({ title, content, published: false });
-  return NextResponse.json({ blog });
+  return NextResponse.json({ blog }, { status: 201 });
 }
