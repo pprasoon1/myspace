@@ -30,7 +30,7 @@ export default function Hero() {
           className="mx-auto w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-zinc-800 shadow-2xl"
         >
           <img
-            src="/stone.png"
+            src="/stone.jpeg"
             alt="Pranay Prasoon"
             className="w-full h-full object-cover"
           />
@@ -84,7 +84,7 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="pt-8"
         >
-          <a href="/resume" className="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-zinc-200 transition-colors">
+          <a href="https://docs.google.com/document/d/1MKOv99oxgPe9NRpz71Y6lsvTVIxsgyK2/edit?usp=sharing&ouid=108070849503608885193&rtpof=true&sd=true" className="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-zinc-200 transition-colors">
             View Resume
           </a>
         </motion.div>
