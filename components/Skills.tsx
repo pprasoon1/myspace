@@ -1,49 +1,71 @@
 'use client';
 import { motion } from 'framer-motion';
-import { FaReact, FaNodeJs, FaGitAlt } from 'react-icons/fa';
-import { SiMongodb, SiNextdotjs, SiTypescript, SiTailwindcss, SiJavascript } from 'react-icons/si';
 
-const skillIcons = {
-  JavaScript: <SiJavascript className="text-yellow-400" />,
-  React: <FaReact className="text-blue-400" />,
-  "Node.js": <FaNodeJs className="text-green-500" />,
-  MongoDB: <SiMongodb className="text-green-400" />,
-  "Tailwind CSS": <SiTailwindcss className="text-cyan-400" />,
-  "Next.js": <SiNextdotjs className="text-white" />,
-  TypeScript: <SiTypescript className="text-blue-500" />,
-  Git: <FaGitAlt className="text-orange-400" />,
-};
+const skills = [
+  {
+    category: "Languages",
+    items: ["Python", "Golang", "TypeScript", "JavaScript (ES6+)", "SQL", "Bash"]
+  },
+  {
+    category: "Backend & Systems",
+    items: ["FastAPI", "Node.js", "Express.js", "WebSockets", "Socket.IO", "Celery & Redis", "Microservices", "gRPC", "GraphQL"]
+  },
+  {
+    category: "Databases",
+    items: ["PostgreSQL", "MongoDB", "TimescaleDB", "Elasticsearch", "Redis", "Data Modeling"]
+  },
+  {
+    category: "Machine Learning",
+    items: ["Scikit-learn", "PyTorch", "ARIMA/Prophet", "NLP (spaCy, BERT)", "Inference Services", "Model Deployment"]
+  },
+  {
+    category: "AI & LLM",
+    items: ["Gemini API", "LangChain", "LangGraph", "RAG Pipelines", "Prompt Engineering"]
+  },
+  {
+    category: "DevOps & Tools",
+    items: ["Docker", "Docker Compose", "Git/GitHub", "CI/CD", "Linux", "AWS"]
+  }
+];
 
 export default function Skills() {
-  const skills: (keyof typeof skillIcons)[] = [
-    "JavaScript", "React", "Node.js", "MongoDB", 
-    "Tailwind CSS", "Next.js", "TypeScript", "Git"
-  ];
-
   return (
-    <section id="skills" className="py-32 px-6 bg-gradient-to-b from-[#171d1a] to-[#232b22]">
-      <div className="max-w-4xl mx-auto text-center bg-white/10 backdrop-blur-xl rounded-2xl shadow-xl border border-white/10 p-10">
-        <motion.h2 
+    <section id="skills" className="py-24 px-6 bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold mb-12 bg-gradient-to-r from-green-400 to-green-700 bg-clip-text text-transparent"
+          className="mb-16 text-center"
         >
-          Skills & Technologies
-        </motion.h2>
-        <div className="flex flex-wrap justify-center gap-6">
-          {skills.map((skill, index) => (
+          <h2 className="text-3xl font-bold text-white mb-4">Technical Proficiency</h2>
+          <p className="text-zinc-400">A comprehensive toolkit for building end-to-end data-intensive applications.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {skills.map((skillGroup, index) => (
             <motion.div
-              key={skill}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
+              key={skillGroup.category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-3 bg-gradient-to-br from-[#1a232a]/70 to-[#183a2c]/60 text-green-200 px-6 py-3 rounded-full font-medium shadow-lg border border-green-700/30 hover:shadow-green-400/30 hover:scale-105 transition-all duration-300"
+              className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-colors"
             >
-              <span className="text-2xl">{skillIcons[skill]}</span>
-              <span className="tracking-wide">{skill}</span>
+              <h3 className="text-xl font-semibold text-white mb-4 border-b border-zinc-800 pb-2">
+                {skillGroup.category}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {skillGroup.items.map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full text-sm hover:bg-zinc-700 hover:text-white transition-colors cursor-default"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>

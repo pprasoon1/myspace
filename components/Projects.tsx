@@ -1,63 +1,109 @@
 'use client';
 import { motion } from 'framer-motion';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+
+const projects = [
+  {
+    title: "PulseIQ – Real-Time Public Sentiment & Intelligence",
+    tech: ["Python", "FastAPI", "Celery", "Redis", "MongoDB", "TimescaleDB", "Elasticsearch", "Docker"],
+    description: "A high-throughput, distributed data pipeline for ingesting real-time social and news data.",
+    points: [
+      "Architected a distributed data ingestion pipeline for real-time social/news data.",
+      "Implemented async task orchestration (Celery/Redis) to decouple ingestion from ML inference.",
+      "Built a dedicated NLP microservice with fine-tuned BERT models and spaCy NER.",
+      "Designed polyglot persistence: MongoDB (docs), TimescaleDB (time-series), Elasticsearch (search).",
+      "Containerized and orchestrated 6+ microservices using Docker Compose."
+    ],
+    links: { github: "#", demo: "#" }
+  },
+  {
+    title: "Crypto Price Prediction System",
+    tech: ["Python", "Pandas", "Scikit-learn", "ARIMA", "Prophet", "NumPy"],
+    description: "Time-series forecasting system to predict cryptocurrency price trends.",
+    points: [
+      "Implemented and compared ARIMA and Facebook Prophet models for short/medium-term forecasting.",
+      "Performed advanced data preprocessing: Stationarity checks, Trend/seasonality decomposition.",
+      "Evaluated models using RMSE, MAE, and rolling-window validation.",
+      "Designed for easy extension to real-time price ingestion and API-based predictions."
+    ],
+    links: { github: "#", demo: "#" }
+  },
+  {
+    title: "SafeChat – ML-Powered Secure Chat",
+    tech: ["Node.js", "Express.js", "MongoDB", "Socket.IO", "Python", "NLP"],
+    description: "Real-time chat platform with built-in ML-powered moderation.",
+    points: [
+      "Developed a real-time chat platform with ML-powered message moderation.",
+      "Implemented NLP models to detect toxic/unsafe messages and classify intent.",
+      "Designed backend APIs to block, flag, or sanitize messages in real-time.",
+      "Integrated ML inference into the chat pipeline with minimal latency impact."
+    ],
+    links: { github: "#", demo: "#" }
+  },
+  {
+    title: "Scalable Online IDE Backend",
+    tech: ["Node.js", "Express.js", "MongoDB", "Docker", "WebSockets"],
+    description: "Backend services for a browser-based online IDE executing untrusted code.",
+    points: [
+      "Executed untrusted user code securely inside isolated Docker containers.",
+      "Implemented real-time collaboration using WebSockets.",
+      "Built project isolation, execution lifecycle management, and authentication.",
+      "Designed for scalability to handle concurrent user sessions."
+    ],
+    links: { github: "#", demo: "#" }
+  }
+];
 
 export default function Projects() {
-  const projects = [
-    {
-      title: "BU RoomSearch",
-      description: "A website that helps students find and change their roommates, hostel rooms. Helped more than 1500 users.",
-      tech: "React.js, Express.js, MongoDB",
-      link: "https://uiroomsearch.vercel.app"
-    },
-    {
-      title: "DevPilot-Pro",
-      description: "An AI powered application that learners with project based learning by providing realtime AI support and step by step approach while building projects",
-      tech: "Gemini-pro, React.js, Express.js, MongoDB",
-      link: "https://devpilot-pro.vercel.app"
-    },
-    {
-      title: "Cropwise",
-      description: "An ML-driven agriculture recommendation system for selecting crops and fertilizers.",
-      tech: "Python, SkLearn, React, Express",
-      link: "https://cropwise-dti.vercel.app"
-    },
-    
-  ];
-  
-
   return (
-    <section id="projects" className="py-32 px-6 bg-gradient-to-b from-[#1a232a] to-[#101a14]">
+    <section id="projects" className="py-24 px-6 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto">
-        <motion.h2 
-          initial={{ opacity: 0, y: 30 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-center mb-16 bg-gradient-to-r from-green-400 to-green-700 bg-clip-text text-transparent"
+          className="mb-16"
         >
-          Featured Projects
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <h2 className="text-3xl font-bold text-white mb-4">Featured Projects</h2>
+          <p className="text-zinc-400">Selected work conceptualizing and building complex systems.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white/10 rounded-2xl shadow-xl border border-white/10 p-8 hover:scale-105 hover:shadow-2xl transition-all duration-300 group backdrop-blur-md"
+              className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all group"
             >
-              <h3 className="text-2xl font-bold mb-3 text-green-400">{project.title}</h3>
-              <p className="text-gray-200 mb-3">{project.description}</p>
-              <p className="text-sm text-green-200 mb-6">{project.tech}</p>
-              <a
-                href={project.link}
-                className="inline-flex items-center text-green-400 font-medium hover:text-white transition-colors"
-              >
-                View Project
-                <FaExternalLinkAlt className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <div className="p-8 space-y-6">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                    {project.title}
+                  </h3>
+                  {/* <div className="flex gap-4 text-zinc-400">
+                    <a href={project.links.github} className="hover:text-white"><FaGithub size={20} /></a>
+                    <a href={project.links.demo} className="hover:text-white"><FaExternalLinkAlt size={18} /></a>
+                  </div> */}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((t) => (
+                    <span key={t} className="px-3 py-1 bg-zinc-800/80 text-blue-300 text-xs font-medium rounded-full border border-blue-900/30">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <ul className="space-y-2 text-zinc-400 text-sm list-disc pl-4 marker:text-zinc-600">
+                  {project.points.map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
+              </div>
             </motion.div>
           ))}
         </div>
